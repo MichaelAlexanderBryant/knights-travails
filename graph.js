@@ -28,16 +28,43 @@ class Graph {
     };
 };
 
-testGraph = new Graph();
+function populateGraph() {
+    chessboard = new Graph();
 
-for (let x = 0; x < 8; x++) {
-    for (let y = 0; y < 8; y++) {
-        possibleMoves = [[x-2, y-1], [x-1, y-2], [x+1, y-2], [x+2,y-1], [x+2, y+1], [x+1, y+2], [x-1, y+2], [x-2, y+1]];
-        for (let move = 0; move < possibleMoves.length; move++) {
-            if ((possibleMoves[move][0] >= 0) && (possibleMoves[move][1] >= 0) &&
-            (possibleMoves[move][0] <= 7) && (possibleMoves[move][1] <= 7)) {
-                testGraph.addEdge(`${x}${y}`, `${possibleMoves[move][0]}${possibleMoves[move][1]}`);
-            }
+    for (let x = 0; x < 8; x++) {
+        for (let y = 0; y < 8; y++) {
+            possibleMoves = [[x-2, y-1], [x-1, y-2], [x+1, y-2], [x+2,y-1], [x+2, y+1], [x+1, y+2], [x-1, y+2], [x-2, y+1]];
+            for (let move = 0; move < possibleMoves.length; move++) {
+                if ((possibleMoves[move][0] >= 0) && (possibleMoves[move][1] >= 0) &&
+                (possibleMoves[move][0] <= 7) && (possibleMoves[move][1] <= 7)) {
+                    chessboard.addEdge(`${x}${y}`, `${possibleMoves[move][0]}${possibleMoves[move][1]}`);
+                }
+            };
         };
     };
+    return chessboard
 };
+
+function knightsTravails(start, target) {
+    chessboard = populateGraph();
+    let queue = [];
+    queue.push(start);
+    let visited = [];
+    while (queue.length > 0) {
+        let currentVertex  = queue.shift();
+        visited.push(currentVertex);
+        if (currentVertex == target) {
+            break;
+        };
+        for (let neighborNum = 0; neighborNum < chessboard.verticies[currentVertex].neighbors.length; neighborNum++) {
+            neighbor = chessboard.verticies[currentVertex].neighbors[neighborNum];
+            if (!(visited.includes(neighbor.key)) && !(queue.includes(neighbor.key))) {
+                queue.push(neighbor.key);
+            };
+        };
+    };
+    return "Found path"
+};
+
+console.log(knightsTravails("00", "24"))
+
