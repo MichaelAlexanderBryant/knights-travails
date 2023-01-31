@@ -50,6 +50,7 @@ function knightsTravails(start, target) {
     let queue = [];
     queue.push(start);
     let visited = [];
+    let path = [];
     while (queue.length > 0) {
         let currentVertex  = queue.shift();
         visited.push(currentVertex);
@@ -60,11 +61,21 @@ function knightsTravails(start, target) {
             neighbor = chessboard.verticies[currentVertex].neighbors[neighborNum];
             if (!(visited.includes(neighbor.key)) && !(queue.includes(neighbor.key))) {
                 queue.push(neighbor.key);
+                path.unshift([currentVertex, neighbor.key])
             };
         };
     };
-    return "Found path"
+    let currentPath;
+    let finalPath = [target];
+    currentVertex = target;
+    while (currentVertex != start) {
+      currentPath = path.shift();
+      if (currentPath[1] == currentVertex) {
+        finalPath.unshift(currentPath[0]);
+        currentVertex = currentPath[0];
+      };
+    };
+    return finalPath
 };
 
-console.log(knightsTravails("00", "24"))
-
+console.log(knightsTravails("00", "77"))
